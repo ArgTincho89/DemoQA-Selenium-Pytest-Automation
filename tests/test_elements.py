@@ -18,8 +18,8 @@ class TestElements(BaseTest):
         # Creation of an Elements Page instance
         elements_page = ElementsPage(self.driver)
         # Navigate to Text Box section
-        text_box_section_title = elements_page.find(*elements_page.text_box_section_title)
-        text_box_section_title.click() 
+        text_box_section_button = elements_page.find(*elements_page.text_box_section_button)
+        text_box_section_button.click() 
         # Complete Full Name Field
         elements_page.set(elements_page.full_name_field, "John Doe")
         # Complete Email Address Field
