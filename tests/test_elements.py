@@ -9,7 +9,7 @@ from utilities.test_data import TestData
 
 class TestElements(BaseTest):
     
-    """def test_01_Complete_Text_Box_Fields(self):
+    def test_01_Complete_Text_Box_Fields(self):
         # Accessing to the Text Box section, completing the form, submitting and asserting results
         home_page = HomePage(self.driver)
         # Navigate to Elements page
@@ -20,6 +20,8 @@ class TestElements(BaseTest):
         # Navigate to Text Box section
         text_box_section_button = elements_page.find(*elements_page.text_box_section_button)
         text_box_section_button.click() 
+        # Asserting that the tittle of the section corresponds to Text Box
+        elements_page.assert_text(elements_page.text_box_section_title, "Text Box")
         # Complete Full Name Field
         elements_page.set(elements_page.full_name_field, "John Doe")
         # Complete Email Address Field
@@ -38,10 +40,10 @@ class TestElements(BaseTest):
         elements_page.assert_content_contains(elements_page.registered_email_field, "johndoe@gmail.com")
         elements_page.assert_content_contains(elements_page.registered_current_address_field, "Address 123")
         elements_page.assert_content_contains(elements_page.registered_permanent_address_field, "Address 456")
-        self.driver.close"""
+        self.driver.close
         
     def test_02_check_box_section(self):
-        """Interacting with the elements of the check box section"""
+        # Interacting with the elements of the check box section
         home_page = HomePage(self.driver)
         # Navigate to Elements page
         elements_link = home_page.find(*home_page.Elements)
@@ -102,3 +104,26 @@ class TestElements(BaseTest):
         elements_page.click(*elements_page.downloads_check_box)
         elements_page.assert_content_contains(elements_page.check_box_results, "downloads", "wordFile", "excelFile")
         self.driver.close
+        
+    def test_03_radio_button_tests(self):
+        # Interacting with the Radio Button elements section.
+        home_page = HomePage(self.driver)
+        # Navigate to Elements page
+        elements_link = home_page.find(*home_page.Elements)
+        self.driver.execute_script("arguments[0].click();", elements_link)
+        # Creation of an Elements Page instance
+        elements_page = ElementsPage(self.driver)
+        # Navigate to Radio Button section
+        elements_page.click(*elements_page.radio_button_section_button)
+        # Asserting that the tittle of the section corresponds to Radio Button
+        elements_page.assert_text(elements_page.radio_button_section_title, "Radio Button")
+        self.driver.execute_script("window.scrollBy(0, document.body.scrollHeight * 0.2);")# scrolls down a 20% to enable better visibility of elements
+        # Selecting the "Yes" option and asserting the correct response
+        elements_page.click(*elements_page.radio_button_yes_button)
+        elements_page.assert_content_contains(elements_page.radio_button_selection_result, "Yes")
+        # Selecting the "Impressive" option and asserting the correct response
+        elements_page.click(*elements_page.radio_button_impressive_button)
+        elements_page.assert_content_contains(elements_page.radio_button_selection_result, "Impressive")
+        # Checks that the "No" option is disabled
+        radio_button_no_option = elements_page.find(*elements_page.radio_button_no_option)
+        assert "disabled" in radio_button_no_option.get_attribute("class")

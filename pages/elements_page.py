@@ -7,6 +7,7 @@ class ElementsPage(BasePage):
     
     # Text Box elements locators
     text_box_section_button = (By.CSS_SELECTOR, "div.element-group:nth-of-type(1) #item-0")
+    text_box_section_title = (By.CSS_SELECTOR, "h1.text-center")
     full_name_field = (By.CSS_SELECTOR, "div#userName-wrapper input")
     email_field = (By.CSS_SELECTOR, "div#userEmail-wrapper input")
     current_address = (By.CSS_SELECTOR, "div#currentAddress-wrapper textarea")
@@ -46,6 +47,13 @@ class ElementsPage(BasePage):
     check_box_results = (By.CSS_SELECTOR,"div#result")
     
     # Radio Button elements locations
+    radio_button_section_button  = (By.CSS_SELECTOR, "div.element-group:nth-of-type(1) #item-2")
+    radio_button_section_title = (By.CSS_SELECTOR, "h1.text-center")
+    radio_button_yes_button = (By.CSS_SELECTOR, "#app > div > div > div > div.col-12.mt-4.col-md-6 > div:nth-child(3) > div:nth-child(2) > label")
+    radio_button_impressive_button = (By.CSS_SELECTOR, "#app > div > div > div > div.col-12.mt-4.col-md-6 > div:nth-child(3) > div:nth-child(3)")
+    radio_button_no_option = (By.CSS_SELECTOR, "#app > div > div > div > div.col-12.mt-4.col-md-6 > div:nth-child(3) > div:nth-child(4)")
+    radio_button_selection_result = (By.CSS_SELECTOR, "#app > div > div > div > div.col-12.mt-4.col-md-6 > div:nth-child(3) > p > span")
+    
     
     def __init__(self, driver):
         super().__init__(driver)
