@@ -11,10 +11,10 @@ class BasePage:
     self.driver = driver
 
   def find(self, *locator):
-    return self.driver.find_element(*locator)
+    return WebDriverWait(self.driver, 30).until(EC.visibility_of_element_located(locator))
 
   def click(self, *locator):
-    self.find(*locator).click()
+    WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable(locator)).click()
 
 
   def set(self, locator, value):
@@ -27,7 +27,19 @@ class BasePage:
   def get_title(self):
     return self.driver.title
 
-  def assert_content_contains(self, locator, value):
+  def assert_content_contains(self, locator, *values):
     element_text = self.find(*locator).text
-    assert value in element_text
+    for value in values:
+        assert value in element_text
+    
+  def assert_text(self, locator, value):
+    element_text = self.find(*locator).text
+    assert value == element_text
 
+  def assert_element_visibility(self, locator):
+    element = self.find(*locator)
+    assert element.is_displayed()
+    
+  def assert_element_not_present(self, locator):
+    elements = self.driver.find_elements(*locator)
+    assert len(elements) == 0
