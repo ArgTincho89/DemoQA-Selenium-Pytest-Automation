@@ -128,7 +128,7 @@ class TestElements(BaseTest):
         elements_page.assert_content_contains(elements_page.radio_button_selection_result, "Impressive")
         # Checks that the "No" option is disabled
         radio_button_no_option = elements_page.find(*elements_page.radio_button_no_option)
-        assert "disabled" in radio_button_no_option.get_attribute("class")"""
+        assert "disabled" in radio_button_no_option.get_attribute("class")
         
     def test_04_web_tables_tests(self):
         # Interacting with the elements of the Web Tables section.
@@ -309,4 +309,29 @@ class TestElements(BaseTest):
         # Checking that the user was correctly deleted
         elements_page.set(elements_page.web_tables_search_input, "edited")
         searched_user = elements_page.find(*elements_page.web_tables_firstname_field).text
-        assert searched_user.strip() == ""
+        assert searched_user.strip() == "" """
+        
+    def test_05_buttons_tests(self):
+        # Interacting with the elements of the buttons section.
+        home_page = HomePage(self.driver)
+        # Navigate to Elements page
+        elements_link = home_page.find(*home_page.Elements)
+        self.driver.execute_script("arguments[0].click();", elements_link)
+        # Creation of an Elements Page instance
+        elements_page = ElementsPage(self.driver)
+        # Navigate to buttons section
+        elements_page.click(*elements_page.buttons_section_button)
+        time.sleep(0.5) # Wait for the screen to adopt correct size
+        # Asserting that the tittle of the section corresponds to Buttons
+        elements_page.assert_text(elements_page.buttons_section_title, "Buttons")
+        # scrolls down 20% to enable better elements visibility
+        self.driver.execute_script("window.scrollBy(0, document.body.scrollHeight * 0.2);")
+        # Performing a Double Click on the Double Click button and asserting the correct response message
+        elements_page.double_click(*elements_page.buttons_double_click_button)
+        elements_page.assert_text(elements_page.buttons_double_click_message, "You have done a double click")
+        # Performing a Right Click on the Right Click button and asserting the correct response message
+        elements_page.right_click(*elements_page.buttons_right_click_button)
+        elements_page.assert_text(elements_page.buttons_right_click_message, "You have done a right click")
+        # Performing a click on the Click me button and asserting the correct response message
+        elements_page.click(*elements_page.buttons_click_button)
+        elements_page.assert_text(elements_page.buttons_click_message, "You have done a dynamic click")
