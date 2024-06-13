@@ -88,6 +88,19 @@ class ElementsPage(BasePage):
     web_tables_salary_field = (By.CSS_SELECTOR, "div.rt-tr-group:nth-of-type(1) div.rt-td:nth-of-type(5)")
     web_tables_department_field = (By.CSS_SELECTOR, "div.rt-tr-group:nth-of-type(1) div.rt-td:nth-of-type(6)")
     
+    # Buttons elements locators
+    buttons_section_button  = (By.CSS_SELECTOR, "div.element-group:nth-of-type(1) #item-4")
+    buttons_section_title = (By.CSS_SELECTOR, "h1.text-center")
+    buttons_double_click_button = (By.ID, "doubleClickBtn")
+    buttons_double_click_message = (By.ID, "doubleClickMessage")
+    buttons_right_click_button = (By.ID, "rightClickBtn")
+    buttons_right_click_message = (By.ID, "rightClickMessage")
+    buttons_click_button = (By.CSS_SELECTOR, "div.col-12:nth-of-type(2) div.mt-4:nth-of-type(3) button")
+    buttons_click_message = (By.ID, "dynamicClickMessage")
+    
+    
+    
+    
     def __init__(self, driver):
         super().__init__(driver)
         

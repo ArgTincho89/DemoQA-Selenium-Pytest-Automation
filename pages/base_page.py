@@ -1,3 +1,4 @@
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -14,8 +15,17 @@ class BasePage:
     return WebDriverWait(self.driver, 30).until(EC.visibility_of_element_located(locator))
 
   def click(self, *locator):
-    WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable(locator)).click()
+    self.find(*locator).click()
 
+  def double_click(self, *locator):
+    element = self.find(*locator)
+    action_chains = ActionChains(self.driver)
+    action_chains.double_click(element).perform()
+
+  def right_click(self, *locator):
+    element = self.find(*locator)
+    action_chains = ActionChains(self.driver)
+    action_chains.context_click(element).perform()
 
   def set(self, locator, value):
     self.find(*locator).clear()
