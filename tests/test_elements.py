@@ -1,4 +1,6 @@
 import time
+
+from selenium.webdriver.common.by import By
 from pages import elements_page
 from pages.elements_page import ElementsPage
 from pages.home_page import HomePage
@@ -9,7 +11,7 @@ from utilities.test_data import TestData
 
 class TestElements(BaseTest):
     
-    def test_01_Complete_Text_Box_Fields(self):
+    """def test_01_Complete_Text_Box_Fields(self):
         # Accessing to the Text Box section, completing the form, submitting and asserting results
         home_page = HomePage(self.driver)
         # Navigate to Elements page
@@ -126,4 +128,185 @@ class TestElements(BaseTest):
         elements_page.assert_content_contains(elements_page.radio_button_selection_result, "Impressive")
         # Checks that the "No" option is disabled
         radio_button_no_option = elements_page.find(*elements_page.radio_button_no_option)
-        assert "disabled" in radio_button_no_option.get_attribute("class")
+        assert "disabled" in radio_button_no_option.get_attribute("class")"""
+        
+    def test_04_web_tables_tests(self):
+        # Interacting with the elements of the Web Tables section.
+        home_page = HomePage(self.driver)
+        # Navigate to Elements page
+        elements_link = home_page.find(*home_page.Elements)
+        self.driver.execute_script("arguments[0].click();", elements_link)
+        # Creation of an Elements Page instance
+        elements_page = ElementsPage(self.driver)
+        # Navigate to web tables section
+        elements_page.click(*elements_page.web_tables_section_button)
+        # Asserting that the tittle of the section corresponds to Web Tables
+        elements_page.assert_text(elements_page.web_tables_section_title, "Web Tables")
+        # scrolls down 20% to enable better elements visibility
+        self.driver.execute_script("window.scrollBy(0, document.body.scrollHeight * 0.2);")
+        # Adding a new element to the table
+        elements_page.click(*elements_page.web_tables_add_button)
+        elements_page.set(elements_page.web_tables_registration_firstname_field, "zzzz")
+        elements_page.set(elements_page.web_tables_registration_lastname_field, "yyyy")
+        elements_page.set(elements_page.web_tables_registration_email_field, "zzzzyyyy@gmail.com")
+        elements_page.set(elements_page.web_tables_registration_age_field, "50")
+        elements_page.set(elements_page.web_tables_registration_salary_field, "50000")
+        elements_page.set(elements_page.web_tables_registration_department_field, "Quality Assurance")
+        elements_page.click(*elements_page.web_tables_registration_submit_button)
+        # Checking that the First Name column correctly orders the content in ascending/descending order when clicking the header
+        first_name_list = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(1)").text
+            first_name_list.append(element)
+            
+        elements_page.click(*elements_page.web_tables_firstname_header)
+        
+        first_name_ascending = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(1)").text
+            first_name_ascending.append(element)
+        assert sorted(first_name_list) == first_name_ascending
+        # Checking reverse order is correct
+        elements_page.click(*elements_page.web_tables_firstname_header)
+        
+        first_name_descending= []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(1)").text
+            first_name_descending.append(element)
+        assert sorted(first_name_list, reverse = True) == first_name_descending
+        
+        # Checking that the last Name column correctly orders the content in ascending/descending order when clicking the header
+        last_name_list = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(2)").text
+            last_name_list.append(element)
+            
+        elements_page.click(*elements_page.web_tables_lastname_header)
+        
+        last_name_ascending = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(2)").text
+            last_name_ascending.append(element)
+        assert sorted(last_name_list) == last_name_ascending
+        # Checking reverse order is correct
+        elements_page.click(*elements_page.web_tables_lastname_header)
+        
+        last_name_descending= []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(2)").text
+            last_name_descending.append(element)
+        assert sorted(last_name_list, reverse = True) == last_name_descending
+        
+        # Checking that the Age column correctly orders the content in ascending/descending order when clicking the header.
+        age_list = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(3)").text
+            age_list.append(element)
+            
+        elements_page.click(*elements_page.web_tables_age_header)
+        
+        age_ascending = []
+        for i in range(1,5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(3)").text
+            age_ascending.append(element)
+        assert sorted(age_list) == age_ascending
+        # Checking reverse order is correct
+        elements_page.click(*elements_page.web_tables_age_header)
+        
+        age_descending = []
+        for i in range(1,5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(3)").text
+            age_descending.append(element)
+        assert sorted(age_list, reverse=True) == age_descending
+        
+        # Checking that the Email column correctly orders the content in ascending/descending order when clicking the header.
+        email_list = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(4)").text
+            email_list.append(element)
+            
+        elements_page.click(*elements_page.web_tables_email_header)
+        
+        email_ascending = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(4)").text
+            email_ascending.append(element)
+        assert sorted(email_list) == email_ascending
+        # Checking reverse order is correct
+        elements_page.click(*elements_page.web_tables_email_header)
+        
+        email_descending = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(4)").text
+            email_descending.append(element)
+        assert sorted(email_list, reverse=True) == email_descending
+        
+        # Checking that the Email column correctly orders the content in ascending/descending order when clicking the header.
+        salary_list = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(5)").text
+            salary_list.append(int(element))
+            
+        elements_page.click(*elements_page.web_tables_salary_header)
+        
+        salary_ascending = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(5)").text
+            salary_ascending.append(int(element))
+        assert sorted(salary_list) == salary_ascending
+        
+        # Checking reverse order is correct
+        elements_page.click(*elements_page.web_tables_salary_header)
+        
+        salary_descending = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(5)").text
+            salary_descending.append(int(element))
+        assert sorted(salary_list, reverse=True) == salary_descending
+        
+        # Checking that the Department column correctly orders the content in ascending/descending order when clicking the header.
+        department_list = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(6)").text
+            department_list.append(element)
+            
+        elements_page.click(*elements_page.web_tables_department_header)
+        
+        department_ascending = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(6)").text
+            department_ascending.append(element)
+        assert sorted(department_list) == department_ascending
+        # Checking reverse order is correct
+        elements_page.click(*elements_page.web_tables_department_header)
+        
+        department_descending = []
+        for i in range(1, 5):
+            element = self.driver.find_element(By.CSS_SELECTOR, f"div.rt-tr-group:nth-of-type({i}) div.rt-td:nth-of-type(6)").text
+            department_descending.append(element)
+        assert sorted(department_list, reverse=True) == department_descending
+
+        # Editing the information of a user
+        elements_page.click(*elements_page.web_tables_elementone_edit_button)
+        elements_page.set(elements_page.web_tables_registration_firstname_field, "zzzz-edited")
+        elements_page.set(elements_page.web_tables_registration_lastname_field, "yyyy-edited")
+        elements_page.set(elements_page.web_tables_registration_email_field, "zzzzyyyy-edited@gmail.com")
+        elements_page.set(elements_page.web_tables_registration_age_field, "99")
+        elements_page.set(elements_page.web_tables_registration_salary_field, "50001")
+        elements_page.set(elements_page.web_tables_registration_department_field, "Quality Assurance-edited")
+        elements_page.click(*elements_page.web_tables_registration_submit_button)
+        # Searching for the recently edited user by performing a search in the search box
+        elements_page.set(elements_page.web_tables_search_input, "edited")
+        # Asserting the recently performed changes to the user's data
+        elements_page.assert_text(elements_page.web_tables_firstname_field, "zzzz-edited")
+        elements_page.assert_text(elements_page.web_tables_lastname_field, "yyyy-edited")
+        elements_page.assert_text(elements_page.web_tables_email_field, "zzzzyyyy-edited@gmail.com")
+        elements_page.assert_text(elements_page.web_tables_age_field, "99")
+        elements_page.assert_text(elements_page.web_tables_salary_field, "50001")
+        elements_page.assert_text(elements_page.web_tables_department_field, "Quality Assurance-edited")
+        # Deleting the created user
+        elements_page.click(*elements_page.web_tables_elementone_delete_button)
+        # Checking that the user was correctly deleted
+        elements_page.set(elements_page.web_tables_search_input, "edited")
+        searched_user = elements_page.find(*elements_page.web_tables_firstname_field).text
+        assert searched_user.strip() == ""

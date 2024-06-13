@@ -13,7 +13,7 @@ from utilities.test_data import TestData
 def initialize_driver(request):
   if request.param == "chrome":
     chrome_options = ChromeOptions()
-    chrome_options.add_argument("--headless")
+  #  chrome_options.add_argument("--headless")
     driver = webdriver.Chrome(options=chrome_options)
   #elif request.param == "firefox":
   #  firefox_options = FirefoxOptions()
