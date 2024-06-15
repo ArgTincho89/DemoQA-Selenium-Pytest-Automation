@@ -1,6 +1,7 @@
 import time
-
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 from pages import elements_page
 from pages.elements_page import ElementsPage
 from pages.home_page import HomePage
@@ -309,7 +310,7 @@ class TestElements(BaseTest):
         # Checking that the user was correctly deleted
         elements_page.set(elements_page.web_tables_search_input, "edited")
         searched_user = elements_page.find(*elements_page.web_tables_firstname_field).text
-        assert searched_user.strip() == "" """
+        assert searched_user.strip() == "" 
         
     def test_05_buttons_tests(self):
         # Interacting with the elements of the buttons section.
@@ -334,4 +335,64 @@ class TestElements(BaseTest):
         elements_page.assert_text(elements_page.buttons_right_click_message, "You have done a right click")
         # Performing a click on the Click me button and asserting the correct response message
         elements_page.click(*elements_page.buttons_click_button)
-        elements_page.assert_text(elements_page.buttons_click_message, "You have done a dynamic click")
+        elements_page.assert_text(elements_page.buttons_click_message, "You have done a dynamic click") """
+        
+    def test_06_links_tests(self):
+        # Interacting with the elements of the links section.
+        home_page = HomePage(self.driver)
+        # Navigate to Elements page
+        elements_link = home_page.find(*home_page.Elements)
+        self.driver.execute_script("arguments[0].click();", elements_link)
+        # Creation of an Elements Page instance
+        elements_page = ElementsPage(self.driver)
+        # scrolls down 20% to enable better elements visibility
+        self.driver.execute_script("window.scrollBy(0, document.body.scrollHeight * 0.2);")
+        # Navigate to Links section
+        elements_page.click(*elements_page.links_section_button)
+        time.sleep(0.5) # Wait for the screen to adopt correct size
+        # Asserting that the tittle of the section corresponds to Links
+        elements_page.assert_text(elements_page.links_section_title, "Links")
+        # scrolls down 30% to enable better elements visibility
+        self.driver.execute_script("window.scrollBy(0, document.body.scrollHeight * 0.3);")
+        # Click Home link, check the url and close the tab
+        elements_page.click(*elements_page.links_home_link)
+        original_tab = self.driver.current_window_handle
+        # Wait for the new tab to be opened
+        WebDriverWait(self.driver, 10).until(EC.number_of_windows_to_be(2))
+        # Switching to the new tab
+        new_window = [window for window in self.driver.window_handles if window != original_tab][0]
+        self.driver.switch_to.window(new_window)
+        # Asserting the new tab has the correct URL
+        assert self.driver.current_url == "https://demoqa.com/"
+        # Closing the new tab and going back to the original tab
+        self.driver.close()
+        self.driver.switch_to.window(original_tab)
+        # scrolls down 15% to enable better elements visibility
+        self.driver.execute_script("window.scrollBy(0, document.body.scrollHeight * 0.15);")
+        # Checking that the "Created" link, sends the correct API call
+        elements_page.click(*elements_page.links_created_link)
+        elements_page.assert_content_contains(elements_page.links_results, "201", "Created")
+        # Checking that the "No Content" link, sends the correct API call
+        elements_page.click(*elements_page.links_no_content_link)
+        time.sleep(0.1) 
+        elements_page.assert_content_contains(elements_page.links_results, "204", "No Content")
+        # Checking that the "Moved" link, sends the correct API call
+        elements_page.click(*elements_page.links_moved_link)
+        time.sleep(0.1)
+        elements_page.assert_content_contains(elements_page.links_results, "301", "Moved Permanently")
+        # Checking that the "Bad Request" link, sends the correct API call
+        elements_page.click(*elements_page.links_bad_request_link)
+        time.sleep(0.1)
+        elements_page.assert_content_contains(elements_page.links_results, "400", "Bad Request")
+        # Checking that the "Unauthorized" link, sends the correct API call
+        elements_page.click(*elements_page.links_unauthorized_link)
+        time.sleep(0.1)
+        elements_page.assert_content_contains(elements_page.links_results, "401", "Unauthorized")
+        # Checking that the "Forbidden" link, sends the correct API call
+        elements_page.click(*elements_page.links_forbidden_link)
+        time.sleep(0.1)
+        elements_page.assert_content_contains(elements_page.links_results, "403", "Forbidden")
+        # Checking that the "Not Found" link, sends the correct API call
+        elements_page.click(*elements_page.links_not_found_link)
+        time.sleep(0.1)
+        elements_page.assert_content_contains(elements_page.links_results, "404", "Not Found")

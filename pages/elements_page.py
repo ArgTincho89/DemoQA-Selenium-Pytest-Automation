@@ -98,6 +98,19 @@ class ElementsPage(BasePage):
     buttons_click_button = (By.CSS_SELECTOR, "div.col-12:nth-of-type(2) div.mt-4:nth-of-type(3) button")
     buttons_click_message = (By.ID, "dynamicClickMessage")
     
+    # Links elements locators
+    links_section_button  = (By.CSS_SELECTOR, "div.element-group:nth-of-type(1) #item-5")
+    links_section_title = (By.CSS_SELECTOR, "h1.text-center")
+    links_home_link = (By.ID,"simpleLink")
+    links_created_link = (By.ID, "created")
+    links_no_content_link = (By.ID, "no-content")
+    links_moved_link = (By.ID, "moved")
+    links_bad_request_link = (By.ID, "bad-request")
+    links_unauthorized_link = (By.ID, "unauthorized")
+    links_forbidden_link = (By.ID, "forbidden")
+    links_not_found_link = (By.ID, "invalid-url")
+    links_results = (By.ID, "linkResponse")
+    
     
     
     
