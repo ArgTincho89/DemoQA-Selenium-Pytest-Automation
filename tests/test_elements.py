@@ -13,7 +13,7 @@ from utilities.test_data import TestData
 
 class TestElements(BaseTest):
     
-    """def test_01_Complete_Text_Box_Fields(self):
+    def test_01_Complete_Text_Box_Fields(self):
         # Accessing to the Text Box section, completing the form, submitting and asserting results
         home_page = HomePage(self.driver)
         # Navigate to Elements page
@@ -328,6 +328,7 @@ class TestElements(BaseTest):
         elements_page.assert_text(elements_page.buttons_section_title, "Buttons")
         # scrolls down 20% to enable better elements visibility
         self.driver.execute_script("window.scrollBy(0, document.body.scrollHeight * 0.2);")
+        time.sleep(0.5) # Wait for the screen to adopt correct size
         # Performing a Double Click on the Double Click button and asserting the correct response message
         elements_page.double_click(*elements_page.buttons_double_click_button)
         elements_page.assert_text(elements_page.buttons_double_click_message, "You have done a double click")
@@ -396,7 +397,7 @@ class TestElements(BaseTest):
         # Checking that the "Not Found" link, sends the correct API call
         elements_page.click(*elements_page.links_not_found_link)
         time.sleep(0.1)
-        elements_page.assert_content_contains(elements_page.links_results, "404", "Not Found") """
+        elements_page.assert_content_contains(elements_page.links_results, "404", "Not Found") 
         
     def test_07_upload_and_download_files_test(self):
         # Interacting with the elements of the Upload and Download section.
@@ -431,4 +432,40 @@ class TestElements(BaseTest):
         # Filter the files that contain 'sampleFile' in the name and has the '.jpeg' format.
         matching_files = [file for file in files_in_download_dir if 'sampleFile' in file and file.endswith('.jpeg')]
         # Checking that the file is found
-        assert len(matching_files) > 0, "No file containing 'sampleFile' and of format 'jpeg' has been found."
+        assert len(matching_files) > 0, "No file containing 'sampleFile' and of format 'jpeg' has been found."  
+        
+    def test_08_dynamic_properties_tests(self):
+        # Interacting with the elements of the links section.
+        home_page = HomePage(self.driver)
+        # Navigate to Elements page
+        elements_link = home_page.find(*home_page.Elements)
+        self.driver.execute_script("arguments[0].click();", elements_link)
+        # Creation of an Elements Page instance
+        elements_page = ElementsPage(self.driver)
+        # scrolls down 20% to enable better elements visibility
+        self.driver.execute_script("window.scrollBy(0, document.body.scrollHeight * 0.2);")
+        # Navigate to Dynamic Properties section
+        elements_page.click(*elements_page.dynamic_properties_section_button)
+        time.sleep(0.5) # Wait for the screen to adopt correct size
+        # scrolls down 20% to enable better elements visibility
+        self.driver.execute_script("window.scrollBy(0, document.body.scrollHeight * 0.2);")
+        # Asserting that the tittle of the section corresponds to Dynamic Properties
+        elements_page.assert_text(elements_page.dynamic_properties_section_title, "Dynamic Properties")
+        # Locating the Random Id text
+        elements_page.find(*elements_page.dynamic_properties_random_id_text)
+        # Checking that the "Will enable 5 seconds" button is disabled
+        enable_button = elements_page.find(*elements_page.dynamic_properties_enable_button)
+        assert not enable_button.is_enabled()
+        # Checking that the "Color Change" button text's color is white
+        color_change_button = elements_page.find(*elements_page.dynamic_properties_color_change_button)
+        color_text = color_change_button.value_of_css_property("color")
+        expected_color_white = "rgba(255, 255, 255, 1)" 
+        assert color_text == expected_color_white
+        # Waiting for the "Visible After 5 Seconds" button
+        elements_page.find(*elements_page.dynamic_properties_visible_after_button)
+        # Checking that the "Will enable 5 seconds" button is now enabled
+        assert enable_button.is_enabled()
+        # Checking that the "Color Change" button text's color is now #dc3545
+        color_text_after = color_change_button.value_of_css_property("color")
+        expected_color_dc3545 = "rgba(220, 53, 69, 1)" 
+        assert color_text_after == expected_color_dc3545

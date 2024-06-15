@@ -111,15 +111,20 @@ class ElementsPage(BasePage):
     links_not_found_link = (By.ID, "invalid-url")
     links_results = (By.ID, "linkResponse")
     
-    #Upload and download elements locators
+    # Upload and Download elements locators
     upload_section_button  = (By.CSS_SELECTOR, "div.element-group:nth-of-type(1) #item-7")
     upload_section_title = (By.CSS_SELECTOR, "h1.text-center")
     upload_button = (By.ID, "uploadFile")
     download_button = (By.ID, "downloadButton")
     upload_uploaded_file_path = ( By.ID, "uploadedFilePath")
     
-
-    
+    # Dynamic Properties elements locators
+    dynamic_properties_section_button  = (By.CSS_SELECTOR, "div.element-group:nth-of-type(1) #item-8")
+    dynamic_properties_section_title = (By.CSS_SELECTOR, "h1.text-center")
+    dynamic_properties_random_id_text = (By.XPATH, "//p[contains(text(), 'This text has random Id')]")
+    dynamic_properties_enable_button = (By.ID, "enableAfter")
+    dynamic_properties_color_change_button = (By.ID, "colorChange")
+    dynamic_properties_visible_after_button = (By.ID, "visibleAfter")
     
     
     def __init__(self, driver):
