@@ -111,6 +111,14 @@ class ElementsPage(BasePage):
     links_not_found_link = (By.ID, "invalid-url")
     links_results = (By.ID, "linkResponse")
     
+    #Upload and download elements locators
+    upload_section_button  = (By.CSS_SELECTOR, "div.element-group:nth-of-type(1) #item-7")
+    upload_section_title = (By.CSS_SELECTOR, "h1.text-center")
+    upload_button = (By.ID, "uploadFile")
+    download_button = (By.ID, "downloadButton")
+    upload_uploaded_file_path = ( By.ID, "uploadedFilePath")
+    
+
     
     
     

@@ -1,3 +1,4 @@
+import os
 import time
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -335,7 +336,7 @@ class TestElements(BaseTest):
         elements_page.assert_text(elements_page.buttons_right_click_message, "You have done a right click")
         # Performing a click on the Click me button and asserting the correct response message
         elements_page.click(*elements_page.buttons_click_button)
-        elements_page.assert_text(elements_page.buttons_click_message, "You have done a dynamic click") """
+        elements_page.assert_text(elements_page.buttons_click_message, "You have done a dynamic click") 
         
     def test_06_links_tests(self):
         # Interacting with the elements of the links section.
@@ -395,4 +396,39 @@ class TestElements(BaseTest):
         # Checking that the "Not Found" link, sends the correct API call
         elements_page.click(*elements_page.links_not_found_link)
         time.sleep(0.1)
-        elements_page.assert_content_contains(elements_page.links_results, "404", "Not Found")
+        elements_page.assert_content_contains(elements_page.links_results, "404", "Not Found") """
+        
+    def test_07_upload_and_download_files_test(self):
+        # Interacting with the elements of the Upload and Download section.
+        home_page = HomePage(self.driver)
+        # Navigate to Elements page
+        elements_link = home_page.find(*home_page.Elements)
+        self.driver.execute_script("arguments[0].click();", elements_link)
+        # Creation of an Elements Page instance
+        elements_page = ElementsPage(self.driver)
+        # scrolls down 20% to enable better elements visibility
+        self.driver.execute_script("window.scrollBy(0, document.body.scrollHeight * 0.2);")
+        # Navigate to Upload and download section
+        elements_page.click(*elements_page.upload_section_button)
+        time.sleep(0.5) # Wait for the screen to adopt correct size
+        # Asserting that the tittle of the section corresponds to Upload and Download
+        elements_page.assert_text(elements_page.upload_section_title, "Upload and Download")
+        # scrolls down 15% to enable better elements visibility
+        self.driver.execute_script("window.scrollBy(0, document.body.scrollHeight * 0.15);")
+        # Uploading a file located in the utilities folder
+        file_path = "C:\\Users\\marti\\OneDrive\\Escritorio\\Martin\\Selenium\\DemoQA_tests\\utilities\\softwaretesting.jpg"
+        elements_page.upload_file(elements_page.upload_button, file_path)
+        # Checking that the path message contains the name of the file
+        elements_page.assert_content_contains(elements_page.upload_uploaded_file_path, "softwaretesting")
+        # Click on the download button
+        elements_page.click(*elements_page.download_button)
+        # Wait for the file to download
+        time.sleep(5)  # Adjust this time based on your internet speed and file size
+        # Verify the file has been downloaded
+        download_path = "C:\\Users\\marti\\Downloads\\DemoQADownloads" 
+        # Lists all files in the download path
+        files_in_download_dir = os.listdir(download_path)
+        # Filter the files that contain 'sampleFile' in the name and has the '.jpeg' format.
+        matching_files = [file for file in files_in_download_dir if 'sampleFile' in file and file.endswith('.jpeg')]
+        # Checking that the file is found
+        assert len(matching_files) > 0, "No file containing 'sampleFile' and of format 'jpeg' has been found."

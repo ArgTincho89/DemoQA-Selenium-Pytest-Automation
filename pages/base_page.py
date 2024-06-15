@@ -53,3 +53,8 @@ class BasePage:
   def assert_element_not_present(self, locator):
     elements = self.driver.find_elements(*locator)
     assert len(elements) == 0
+    
+  def upload_file(self, locator, file_path):
+    # Method for uploading file using a custom locator
+    upload_element = self.find(*locator)
+    upload_element.send_keys(file_path)
