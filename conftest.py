@@ -15,8 +15,7 @@ def initialize_driver(request):
     if request.param == "chrome":
         chrome_options = ChromeOptions()
         chrome_options.add_argument("--start-maximized")
-        chrome_options.add_argument("--headless")
-
+        #chrome_options.add_argument("--headless")
         download_directory = "C:\\Users\\marti\\Downloads\\DemoQADownloads"
         prefs = {"download.default_directory": download_directory}
         chrome_options.add_experimental_option("prefs", prefs)
@@ -25,12 +24,12 @@ def initialize_driver(request):
     elif request.param == "firefox":
         firefox_options = FirefoxOptions()
         firefox_options.add_argument("--start-maximized")
-        firefox_options.add_argument("--headless")
+        #firefox_options.add_argument("--headless")
         driver = webdriver.Firefox(options=firefox_options)
     elif request.param == "edge":
          edge_options = EdgeOptions()
          edge_options.add_argument("--start-maximized") 
-         edge_options.add_argument("--headless")
+         #edge_options.add_argument("--headless")
          driver = webdriver.Edge(options=edge_options)
     request.cls.driver = driver
     print("Browser: ", request.param)
