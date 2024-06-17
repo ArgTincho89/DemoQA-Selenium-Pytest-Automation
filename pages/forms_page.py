@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 
 class FormsPage(BasePage):
     
-    # Text Box elements locators
+    # Form elements locators
     forms_section_button = (By.CSS_SELECTOR, "div.left-pannel div.element-group:nth-of-type(2) div.element-list ul")
     forms_section_title = (By.CSS_SELECTOR, "h1.text-center")
     forms_first_name_field = (By.ID, "firstName")
